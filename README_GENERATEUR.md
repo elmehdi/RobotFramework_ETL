@@ -12,7 +12,7 @@ Ce script permet de générer automatiquement les variables de validation de cha
 
 ## Format du fichier CSV d'entrée
 
-Le fichier CSV doit contenir les colonnes suivantes (séparées par des virgules) :
+Le fichier CSV doit contenir les colonnes suivantes (séparées par des **points-virgules**) :
 
 1. **Numéro de Colonne** : La position du champ (1 à N)
 2. **Nom de Colonne** : Le nom du champ
@@ -22,11 +22,11 @@ Le fichier CSV doit contenir les colonnes suivantes (séparées par des virgules
 
 Exemple :
 ```
-Number of the Column,Column Name,Data Type,Data Length,Data Scale
-1,field1,VARCHAR2,50,
-2,field2,NUMBER,10,0
-3,field3,NUMBER,15,2
-4,field4,DATE,19,
+Number of the Column;Column Name;Data Type;Data Length;Data Scale
+1;field1;VARCHAR2;50;
+2;field2;NUMBER;10;0
+3;field3;NUMBER;15;2
+4;field4;DATE;19;
 ```
 
 ## Conversion des types
@@ -40,17 +40,13 @@ Le script convertit les types de données Oracle en types de validation Robot Fr
 
 ## Utilisation
 
-### Générer les variables et les afficher sur la console
+### Générer les variables et les écrire dans le fichier Robot Framework
 
 ```bash
 ./generate_field_variables.sh chemin/vers/fichier.csv
 ```
 
-### Générer les variables et les écrire dans un fichier Robot Framework
-
-```bash
-./generate_field_variables.sh chemin/vers/fichier.csv chemin/vers/sortie.robot
-```
+Le script génère automatiquement les variables dans le fichier `Resources/champs_variables.robot`.
 
 ## Fichiers de log
 
@@ -84,3 +80,14 @@ Pour utiliser les variables générées dans vos tests Robot Framework :
 - Le script ignore automatiquement les lignes d'en-tête dans le fichier CSV
 - Le nombre total de champs est déterminé par le numéro de colonne dans la dernière ligne du fichier
 - Les types de données inconnus sont convertis en STRING par défaut
+- Le script inclut une gestion améliorée des erreurs pour détecter les problèmes de format dans le fichier CSV
+- Les tableaux de types et de tailles sont vérifiés avant traitement pour éviter les erreurs
+- Le script utilise les points-virgules (;) comme séparateurs de champs dans le fichier CSV
+
+## Dépannage
+
+Si vous rencontrez des erreurs comme `syntax error: invalid arithmetic operator`, vérifiez que :
+
+1. Votre fichier CSV utilise bien des points-virgules (;) comme séparateurs et non des virgules
+2. Le format du fichier CSV correspond à l'exemple fourni
+3. Il n'y a pas de caractères spéciaux ou d'espaces supplémentaires dans les valeurs numériques
