@@ -1,0 +1,11 @@
+Number of the Column;Column Name;Data Type;Data Length;Data Scale
+1;field1;VARCHAR2;50;
+2;field2;NUMBER;10;0
+3;field3;NUMBER;15;2
+4;field4;DATE;19;
+5;field5;VARCHAR2;100;
+6;field6;VARCHAR2;100;
+7;field7;NUMBER;10;0
+8;field8;NUMBER;15.3;
+9;field9;VARCHAR2;50;
+10;field10;VARCHAR2;50;

@@ -10,25 +10,28 @@ Suite Teardown   Disconnect From Oracle Database
 
 *** Test Cases ***
 Verify Input Files Exist
-    [Documentation]    Vérifier que les fichiers d'entrée correspondant au modèle OCI*.csv existent
-    ${files}=    Find Files With Pattern    ${INPUT_DIR}    ${OCI_FILE_PATTERN}
-    Should Not Be Empty    ${files}    Aucun fichier correspondant au modèle ${OCI_FILE_PATTERN} trouvé dans ${INPUT_DIR}
-    Set Suite Variable    @{OCI_FILES}    @{files}
-    Log    Fichiers trouvés: @{OCI_FILES}
+    [Documentation]    Vérifier que les fichiers d'entrée correspondant au modèle MASK*.csv existent
+    # from Keywords
+    ${files}=    Find Files With Pattern    ${INPUT_DIR}    ${INPUT_FILE_PATTERN}
+    Should Not Be Empty    ${files}    Aucun fichier correspondant au modèle ${INPUT_FILE_PATTERN} trouvé dans ${INPUT_DIR}
+    Set Suite Variable    @{INPUT_FILES}    @{files}
+    Log    Fichiers trouvés: @{INPUT_FILES}
 
 Validate Structure Of Input Files
     [Documentation]    Valider la structure de chaque fichier d'entrée
-    FOR    ${file}    IN    @{OCI_FILES}
+    FOR    ${file}    IN    @{INPUT_FILES}
         ${file_path}=    Set Variable    ${INPUT_DIR}/${file}
         Log    Validation de la structure du fichier: ${file_path}
-        Validate File Structure    ${file_path}    ${OCI_FIELD_COUNT}    ${OCI_FIELD_TYPES}    ${OCI_FIELD_SIZES}
+        # from Keywords
+        Validate File Structure    ${file_path}    ${INPUT_FIELD_COUNT}    ${INPUT_FIELD_TYPES}    ${INPUT_FIELD_SIZES}
     END
 
 Count Rows In Input Files
     [Documentation]    Compter le nombre de lignes dans chaque fichier d'entrée
     @{row_counts}=    Create List
-    FOR    ${file}    IN    @{OCI_FILES}
+    FOR    ${file}    IN    @{INPUT_FILES}
         ${file_path}=    Set Variable    ${INPUT_DIR}/${file}
+        # from Keywords
         ${row_count}=    Count Lines In File    ${file_path}
         Append To List    ${row_counts}    ${row_count}
         Log    Le fichier ${file} contient ${row_count} lignes
@@ -77,7 +80,7 @@ Verify Rejection Files
 
 Verify Rejection And Archive Files
     [Documentation]    Vérifier que les fichiers de rejet et d'archive existent
-    FOR    ${file}    IN    @{OCI_FILES}
+    FOR    ${file}    IN    @{INPUT_FILES}
         ${base_name}=    Fetch From Left    ${file}    .csv
         ${rej_file}=    Set Variable    ${base_name}_rej.csv
 

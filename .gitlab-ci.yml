@@ -7,6 +7,8 @@ variables:
   DB_USER_DEFAULT: "db_username"
   DB_PASSWORD_DEFAULT: "db_password"
   DB_HOST_DEFAULT: "db_host"
+  # Test configuration defaults
+  VALIDATE_FIELDS_DEFAULT: "TRUE"
 
 # Job to run the CHARGEMENT tests
 chargement_tests:
@@ -17,11 +19,11 @@ chargement_tests:
     - pip install robotframework
     - pip install robotframework-databaselibrary
     - pip install cx_Oracle
-    
+
     # Create directories needed for tests
     - mkdir -p input archive rej
-    
-    # Create a variables file with the database credentials from GitLab CI/CD variables
+
+    # Create a variables file with the database credentials and test configuration from GitLab CI/CD variables
     - |
       cat > Resources/variables_ci.robot << EOF
       *** Variables ***
@@ -30,12 +32,15 @@ chargement_tests:
       \${DB_USER_VAR}         ${DB_USER:-$DB_USER_DEFAULT}
       \${DB_PASSWORD_VAR}     ${DB_PASSWORD:-$DB_PASSWORD_DEFAULT}
       \${DB_HOST_VAR}         ${DB_HOST:-$DB_HOST_DEFAULT}
+
+      # Test configuration variables from GitLab CI/CD
+      \${VALIDATE_FIELDS}     ${VALIDATE_FIELDS:-$VALIDATE_FIELDS_DEFAULT}
       EOF
-    
+
     # Import the CI variables into the main variables file
     - |
       cat >> Resources/variables.robot << EOF
-      
+
       # Import CI variables
       Resource    variables_ci.robot
       EOF
