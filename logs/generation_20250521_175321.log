@@ -1,0 +1,15 @@
+2025-05-21 17:53:21 - Démarrage du traitement du fichier sample_fields.csv
+2025-05-21 17:53:21 - Traitement de 10;field10;VARCHAR2;50; champs depuis sample_fields.csv...
+2025-05-21 17:53:21 - Champ 1: field1 - Type: STRING, Taille: 50
+2025-05-21 17:53:21 - Champ 2: field2 - Type: INT, Taille: 10
+2025-05-21 17:53:21 - Champ 3: field3 - Type: DOUBLE, Taille: 15
+2025-05-21 17:53:21 - Champ 4: field4 - Type: DATE, Taille: 19
+2025-05-21 17:53:21 - Champ 5: field5 - Type: STRING, Taille: 100
+2025-05-21 17:53:21 - Champ 6: field6 - Type: STRING, Taille: 100
+2025-05-21 17:53:21 - Champ 7: field7 - Type: INT, Taille: 10
+2025-05-21 17:53:21 - Champ 8: field8 - Type: DOUBLE, Taille: 15.3
+2025-05-21 17:53:22 - Champ 9: field9 - Type: STRING, Taille: 50
+2025-05-21 17:53:22 - Champ 10: field10 - Type: STRING, Taille: 50
+2025-05-21 17:53:22 - Structure des champs: []
+2025-05-21 17:53:22 - Variables Robot Framework écrites dans Resources/champs_variables.robot
+2025-05-21 17:53:22 - Traitement terminé. Fichier de log: logs/generation_20250521_175321.log

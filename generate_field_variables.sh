@@ -42,7 +42,7 @@ declare -a FIELD_SIZES
 
 # Obtenir la dernière ligne pour déterminer le nombre total de champs
 LAST_LINE=$(tail -n 1 "$CSV_FILE")
-FIELD_COUNT=$(echo "$LAST_LINE" | cut -d ',' -f 1)
+FIELD_COUNT=$(echo "$LAST_LINE" | cut -d ';' -f 1)
 
 log "Traitement de $FIELD_COUNT champs depuis $CSV_FILE..."
 
@@ -86,7 +86,16 @@ done < "$CSV_FILE"
 # Générer un tableau formaté pour l'affichage dans les logs
 generate_array_output() {
     local array_output="["
-    for i in $(seq 0 $((FIELD_COUNT-1))); do
+    # Vérifier si les tableaux contiennent des données
+    if [ ${#FIELD_TYPES[@]} -eq 0 ] || [ ${#FIELD_SIZES[@]} -eq 0 ]; then
+        log "Avertissement: Aucun champ n'a été traité correctement."
+        array_output="$array_output]"
+        log "Structure des champs: $array_output"
+        return
+    fi
+
+    # Itérer sur les indices des tableaux
+    for i in "${!FIELD_TYPES[@]}"; do
         if [ $i -gt 0 ]; then
             array_output="$array_output, "
         fi
@@ -98,31 +107,47 @@ generate_array_output() {
 
 # Générer les définitions de variables Robot Framework
 generate_output() {
-    echo "*** Variables ***"
+
     echo "*** Settings ***"
     echo "Documentation    Variables associés aux champs trouvés dans le csv"
+    echo " "
+    echo "*** Variables ***"
     echo "# Structure attendue des fichiers ou JDD"
     echo "@{INPUT_FIELD_COUNT}    $FIELD_COUNT    # Nombre de champs attendus dans les fichiers attendus"
 
     # Formater les types de champs avec un espacement approprié
     TYPES_STRING=""
-    for i in $(seq 0 $((FIELD_COUNT-1))); do
-        if [ -n "$TYPES_STRING" ]; then
-            TYPES_STRING="$TYPES_STRING    "
-        fi
-        TYPES_STRING="$TYPES_STRING${FIELD_TYPES[$i]}"
-    done
-    echo "@{INPUT_FIELD_TYPES}    $TYPES_STRING"
+    # Vérifier si les tableaux contiennent des données
+    if [ ${#FIELD_TYPES[@]} -eq 0 ]; then
+        log "Avertissement: Aucun type de champ n'a été traité correctement."
+        echo "@{INPUT_FIELD_TYPES}    # Aucun type de champ disponible"
+    else
+        # Itérer sur les indices des tableaux
+        for i in "${!FIELD_TYPES[@]}"; do
+            if [ -n "$TYPES_STRING" ]; then
+                TYPES_STRING="$TYPES_STRING    "
+            fi
+            TYPES_STRING="$TYPES_STRING${FIELD_TYPES[$i]}"
+        done
+        echo "@{INPUT_FIELD_TYPES}    $TYPES_STRING"
+    fi
 
     # Formater les tailles de champs avec un espacement approprié
     SIZES_STRING=""
-    for i in $(seq 0 $((FIELD_COUNT-1))); do
-        if [ -n "$SIZES_STRING" ]; then
-            SIZES_STRING="$SIZES_STRING    "
-        fi
-        SIZES_STRING="$SIZES_STRING${FIELD_SIZES[$i]}"
-    done
-    echo "@{INPUT_FIELD_SIZES}    $SIZES_STRING"
+    # Vérifier si les tableaux contiennent des données
+    if [ ${#FIELD_SIZES[@]} -eq 0 ]; then
+        log "Avertissement: Aucune taille de champ n'a été traitée correctement."
+        echo "@{INPUT_FIELD_SIZES}    # Aucune taille de champ disponible"
+    else
+        # Itérer sur les indices des tableaux
+        for i in "${!FIELD_SIZES[@]}"; do
+            if [ -n "$SIZES_STRING" ]; then
+                SIZES_STRING="$SIZES_STRING    "
+            fi
+            SIZES_STRING="$SIZES_STRING${FIELD_SIZES[$i]}"
+        done
+        echo "@{INPUT_FIELD_SIZES}    $SIZES_STRING"
+    fi
 
     echo "# Variables générées à partir de $CSV_FILE"
     echo "# Générées le $(date)"
