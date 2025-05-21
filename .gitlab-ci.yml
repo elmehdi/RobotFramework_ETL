@@ -18,7 +18,7 @@ chargement_tests:
     # Install Robot Framework and required libraries
     - pip install robotframework
     - pip install robotframework-databaselibrary
-    - pip install cx_Oracle
+    - pip install oracledb
 
     # Create directories needed for tests
     - mkdir -p input archive rej

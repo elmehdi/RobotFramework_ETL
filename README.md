@@ -73,4 +73,5 @@ robot -d Results Tests/CHARGEMENT/chargement_tests.robot
 
 - Robot Framework
 - DatabaseLibrary pour les connexions à la base de données Oracle
+- Module oracledb pour la connexion à Oracle (remplace cx_Oracle)
 - Bibliothèque OperatingSystem pour les opérations sur les fichiers

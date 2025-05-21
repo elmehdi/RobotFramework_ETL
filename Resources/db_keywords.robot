@@ -6,7 +6,14 @@ Library          Collections
 *** Keywords ***
 Connect To Oracle Database
     [Documentation]    Se connecter à la base de données Oracle
-    Connect To Database    cx_Oracle    ${DB_NAME}    ${DB_USER}    ${DB_PASSWORD}    ${DB_HOST}:${DB_PORT}
+    # Format de connexion pour oracledb
+    Connect To Database
+    ...    oracledb
+    ...    db_name=${DB_NAME}
+    ...    db_user=${DB_USER}
+    ...    db_password=${DB_PASSWORD}
+    ...    db_host=${DB_HOST}
+    ...    db_port=${DB_PORT}
 
 Disconnect From Oracle Database
     [Documentation]    Se déconnecter de la base de données Oracle
